@@ -1,6 +1,6 @@
 <template>
   <div class="role">
-    <DynamicForm />
+    <DynamicForm :myForm="myForm" :eventBusEvent="'EventBusRole'" />
   </div>
 </template>
 

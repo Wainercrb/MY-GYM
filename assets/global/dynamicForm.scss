@@ -1,0 +1,27 @@
+@import './variables.scss';
+
+.dn-form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  &__input {
+    height: 30px;
+    border-radius: 0;
+    margin: 5px 0;
+    border: 1px solid black;
+    &-ready {
+      border-color: $input-ready-border-color;
+    }
+    &-error {
+      border-color: $input-error-border-color;
+    }
+  }
+
+  &__btn {
+    background-color: $btn-form-submit-bg-color;
+    color: $btn-form-submit-color;
+    border: none;
+    height: 30px;
+  }
+}

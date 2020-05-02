@@ -1,5 +1,5 @@
 <template>
-  <div ref="parentContainer" class="form" />
+  <div ref="parentContainer" class="dn-form" />
 </template>
 
 <script src="./script.js"></script>
