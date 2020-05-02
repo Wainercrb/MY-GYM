@@ -1,0 +1,46 @@
+@import '../../../assets/global/variables.scss';
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: $main-color;
+  height: 100vh;
+  width: $sidebar-width;
+  transition: all .7s;
+
+  &-open {
+    transform: translate3d(-100%, 0, 0);
+  }
+
+  &-close {
+    transform: translate3d(0, 0, 0);
+  }
+  @media screen and (max-width: $col-sm-max) {
+    width: 100%;
+  }
+
+  &__header {
+    position: relative;
+    background: rgba(0, 0, 0, 0.1);
+    text-align: center;
+    padding: $navbar-height 0;
+  }
+
+  &__btn {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    background-color: red;
+    height: 40px; 
+    width: 40px;
+    cursor: pointer;
+    z-index: 1;
+  }
+
+  &__avatar {
+    height: 100px;
+    border-radius: 50%;
+    border: 4px red solid;
+  }
+}

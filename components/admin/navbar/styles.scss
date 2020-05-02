@@ -1,0 +1,22 @@
+@import '../../../assets/global/variables.scss';
+
+.admin-navbar {
+  display: flex;
+  background-color: $main-color;
+  justify-content: space-between;
+  padding: 10px;
+  font-size: 16px;
+  &__menu {
+    display: flex;
+  }
+  &__txt {
+    margin-left: 10px;
+  }
+
+  &__btn {
+    background-color: red;
+    cursor: pointer;
+    height: 20px;
+    width: 20px;
+  }
+}
