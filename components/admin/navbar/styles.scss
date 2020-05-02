@@ -6,9 +6,12 @@
   justify-content: space-between;
   padding: 10px;
   font-size: 16px;
+  box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
+
   &__menu {
     display: flex;
   }
+
   &__txt {
     margin-left: 10px;
   }
