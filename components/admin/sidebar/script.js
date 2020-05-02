@@ -3,7 +3,7 @@ import { EventBus } from '~/assets/scripts/vue-helpers/eventBus'
 export default {
   data() {
     return {
-      menuIsOpen: false
+      menuIsOpen: true
     }
   },
   mounted() {
