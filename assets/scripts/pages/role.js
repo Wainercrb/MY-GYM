@@ -1,51 +1,34 @@
 import { mapState, mapActions } from 'vuex'
-import DynamicForm from '~/components/admin/dynamicForm'
+import DynamicForm from '~/components/global/dynamicForm'
+import DynamicTable from '~/components/global/dynamicTable'
 import { EventBus } from '~/assets/scripts/vue-helpers/eventBus'
+import roleFormJson from '~/assets/forms/role.json'
 
 const EVENT_BUS_LISTENER = 'EventBusRole'
 
 export default {
   layout: 'admin',
   components: {
-    DynamicForm
+    DynamicForm,
+    DynamicTable
   },
   computed: mapState({
-    products: (state) => state.modules.user.users
+    roles: (state) => state.modules.role.roles,
+    thead: (state) => state.modules.role.thead
   }),
   data() {
     return {
-      myForm: [
-        {
-          ele: 'input',
-          className: 'dn-form__input uno',
-          placeHolder: 'uno',
-          value: '',
-          eleType: 'isEmail',
-          name: 'email1'
-        },
-        {
-          ele: 'input',
-          className: 'dn-form__input uno',
-          placeHolder: 'uno',
-          value: '',
-          eleType: 'isEmail',
-          name: 'email2'
-        },
-        {
-          ele: 'button-ready',
-          className: 'dn-form__btn uno',
-          text: 'uno'
-        }
-      ]
+      myForm: roleFormJson
     }
   },
   methods: mapActions('modules/user', ['addProductToCart']),
   created() {
-    this.$store.dispatch('modules/user/getAllProducts')
+    this.$store.dispatch('modules/role/initTable')
+    this.$store.dispatch('modules/role/getAllRoles')
   },
   mounted() {
     EventBus.$on(EVENT_BUS_LISTENER, (data) => {
-      console.log('is this the data', data)
+      this.$store.dispatch('modules/role/saveRole', data)
     })
   }
 }

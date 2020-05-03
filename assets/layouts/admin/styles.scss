@@ -1,16 +1,5 @@
 @import '../../../assets/global/variables.scss';
 
-
 body {
-//   margin: 0;
-//   padding-left: $sidemenu-width-desktop;
-//   font-family: 'Open Sans', Helvetica Neue, Helvetica, Arial, sans-serif;
-  
-//   @media screen and (max-width: $col-lg-max) and (min-width: $col-sm-max) {
-//     padding-left: $sidemenu-width-tablet;
-//   }
-
-//   @media screen and (max-width: $col-sm-max) {
-//     padding-left: 0;
-//   }
+  background-color: $page-bg-color;
 }

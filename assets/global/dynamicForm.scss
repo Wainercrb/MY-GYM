@@ -3,13 +3,17 @@
 .dn-form {
   display: flex;
   flex-direction: column;
-  width: 100%;
+  align-items: center;
+  padding: 10px 5px;
+  border-radius: 3px;
+  background-color: $card-bg-color;
 
   &__input {
-    height: 30px;
-    border-radius: 0;
     margin: 5px 0;
+    width: 300px;
+    height: 30px;
     border: 1px solid black;
+    border-radius: 0;
     &-ready {
       border-color: $input-ready-border-color;
     }
@@ -19,9 +23,19 @@
   }
 
   &__btn {
+    width: 100px;
+    height: 30px;
+    border: none;
     background-color: $btn-form-submit-bg-color;
     color: $btn-form-submit-color;
-    border: none;
-    height: 30px;
+  }
+
+  &__div {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__label {
+    margin-right: 5px;
   }
 }

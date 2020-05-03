@@ -1,0 +1,25 @@
+@import './variables.scss';
+
+.dn-table {
+  padding: 10px 5px;
+  border-radius: 5px;
+  background-color: $card-bg-color;
+
+  &__table {
+    width: 100%;
+    border: 1px solid #ddd;
+    border-collapse: collapse;
+    text-align: left;
+  }
+
+  &__acciones {
+    margin-right: 5px;
+  }
+
+  &__td,
+  &__th {
+    padding: 15px;
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+}

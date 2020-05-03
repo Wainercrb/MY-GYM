@@ -1,6 +1,17 @@
 <template>
   <div class="role">
-    <DynamicForm :myForm="myForm" :eventBusEvent="'EventBusRole'" />
+    <DynamicForm
+      :title="'Nuevo Usuario'"
+      :myForm="myForm"
+      :eventBusEvent="'EventBusRole'"
+      class="role__form"
+    />
+    <DynamicTable
+      :title="'Lista de Roles'"
+      :data="roles"
+      :thead="thead"
+      class="role__table"
+    />
   </div>
 </template>
 
