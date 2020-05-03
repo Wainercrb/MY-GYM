@@ -1,9 +1,10 @@
 [
   {
     "ele": "input",
-    "className": "dn-form__input",
+    "className": "dn-form__ele dn-form__input",
     "name": "roleName",
-    "type": "text",
+    "type": "INPUT",
+    "eleType": "text",
     "placeHolder": "",
     "value": "",
     "validatorType": "isByteLength",
@@ -13,6 +14,23 @@
     "validateOptions": {
       "min": 2,
       "max": 50
+    }
+  },
+  {
+    "ele": "input",
+    "className": "dn-form__ele dn-form__textarea",
+    "name": "details",
+    "type": "TEXTAREA",
+    "eleType": "text",
+    "placeHolder": "",
+    "value": "",
+    "validatorType": "isByteLength",
+    "labelText": "Detalles",
+    "labelClass": "dn-form__label",
+    "parentDivClass": "dn-form__div",
+    "validateOptions": {
+      "min": 2,
+      "max": 100
     }
   },
   {

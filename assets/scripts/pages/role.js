@@ -1,10 +1,15 @@
-import { mapState, mapActions } from 'vuex'
+import { mapState } from 'vuex'
 import DynamicForm from '~/components/global/dynamicForm'
 import DynamicTable from '~/components/global/dynamicTable'
 import { EventBus } from '~/assets/scripts/vue-helpers/eventBus'
 import roleFormJson from '~/assets/forms/role.json'
 
-const EVENT_BUS_LISTENER = 'EventBusRole'
+const STATES = {
+  submiting: 'ROLE-SUBMITING',
+  updating: 'ROLE-UPDATING',
+  deleting: 'ROLE-DELETING',
+  disabling: 'ROLE-DISABLING'
+}
 
 export default {
   layout: 'admin',
@@ -18,17 +23,40 @@ export default {
   }),
   data() {
     return {
-      myForm: roleFormJson
+      myForm: roleFormJson,
+      states: STATES,
+      currentRole: {}
     }
   },
-  methods: mapActions('modules/user', ['addProductToCart']),
   created() {
     this.$store.dispatch('modules/role/initTable')
     this.$store.dispatch('modules/role/getAll')
   },
   mounted() {
-    EventBus.$on(EVENT_BUS_LISTENER, (data) => {
-      this.$store.dispatch('modules/role/save', data)
-    })
+    this.initListeners()
+  },
+  methods: {
+    initListeners() {
+      EventBus.$on(this.states.submiting, (data) => {
+        const updateObj = {
+          id: this.currentRole._id,
+          oldData: this.currentRole,
+          data
+        }
+        this.$store.dispatch('modules/role/update', updateObj)
+      })
+      EventBus.$on(this.states.updating, (role) => {
+        this.myForm = []
+        this.currentRole = role
+        roleFormJson.forEach((item) => {
+          const match = role[item.name]
+          if (match) {
+            item.value = match
+          }
+          this.myForm.push(item)
+        })
+      })
+      EventBus.$on(this.states.deleting, (data) => {})
+    }
   }
 }

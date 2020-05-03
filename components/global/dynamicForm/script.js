@@ -2,7 +2,16 @@ import Validator from 'validator'
 import { EventBus } from '~/assets/scripts/vue-helpers/eventBus'
 
 export default {
-  props: ['myForm', 'eventBusEvent', 'title'],
+  props: ['myForm', 'states', 'title'],
+  watch: {
+    myForm(newVal, oldVal) {
+      this.resetValues()
+      this.myForm = newVal
+      this.buildElements = []
+      this.parentContainer.innerHTML = ''
+      this.createFormElements()
+    }
+  },
   data() {
     return {
       formHasError: false,
@@ -45,12 +54,25 @@ export default {
         this.parentContainer.appendChild(button)
       }
     },
+    createFormElements() {
+      this.myForm.forEach(this.buildSingleElement)
+      this.createSubmitButton()
+    },
     submitButtonClick() {
       this.formHasError = false
       this.validateFullForm()
       if (!this.formHasError) {
-        EventBus.$emit(this.eventBusEvent, { data: this.data })
+        EventBus.$emit(this.states.submiting, { ...this.data })
+        this.resetValues()
       }
+    },
+    resetValues() {
+      this.formHasError = false
+      this.buildElements.forEach((ele) => {
+        ele.classList.remove('dn-form__ele-error')
+        ele.classList.remove('dn-form__ele-ready')
+        ele.value = ''
+      })
     },
     validateFullForm() {
       this.buildElements.forEach((ele) => {
@@ -66,10 +88,6 @@ export default {
         })
       })
     },
-    createFormElements() {
-      this.myForm.forEach(this.buildSingleElement)
-      this.createSubmitButton()
-    },
     buildSingleElement(item) {
       const element = this.elements[item.ele]
       if (typeof element === 'function') {
@@ -79,14 +97,15 @@ export default {
     buildFormElements() {
       return {
         input: (item) => {
-          const input = document.createElement('INPUT')
+          const input = document.createElement(item.type)
           const label = this.createLabel(item.labelText, item.labelClass)
           const div = this.createParentDiv(item.parentDivClass)
           input.setAttribute('class', item.className)
           input.setAttribute('placeholder', item.placeHolder)
-          input.setAttribute('type', item.type)
+          input.setAttribute('type', item.eleType)
           input.setAttribute('name', item.name)
           input.setAttribute('value', item.value)
+          input.innerHTML = item.value
           input.addEventListener('change', (event) => {
             const value = event.target.value
             const name = event.target.name
@@ -110,14 +129,14 @@ export default {
       const isValid = validator(options.value, options.validateOptions)
       if (isValid) {
         this.data[options.name] = options.value
-        options.ele.classList.add('dn-form__input-ready')
-        options.ele.classList.remove('dn-form__input-error')
+        options.ele.classList.add('dn-form__ele-ready')
+        options.ele.classList.remove('dn-form__ele-error')
         return
       }
       this.formHasError = true
       delete this.data[name]
-      options.ele.classList.add('dn-form__input-error')
-      options.ele.classList.remove('dn-form__input-ready')
+      options.ele.classList.add('dn-form__ele-error')
+      options.ele.classList.remove('dn-form__ele-ready')
     }
   }
 }

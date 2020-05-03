@@ -25,13 +25,12 @@
             v-show="tdIndex !== '_id'"
             class="dn-table__td"
           >
-            {{ td }}
+            {{ typeof td === 'object' ? td.toLocaleDateString() : td }}
           </td>
           <td class="dn-table__td">
             <div class="dn-table__acciones">
               <button @click="editRecord(tr)">Editar</button>
               <button @click="deleteRecord(tr)">Eliminar</button>
-              <button @click="updateRecord(tr)">Actualizar</button>
             </div>
           </td>
         </tr>

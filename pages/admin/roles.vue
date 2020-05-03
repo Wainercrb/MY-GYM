@@ -3,13 +3,14 @@
     <DynamicForm
       :title="'Nuevo Usuario'"
       :myForm="myForm"
-      :eventBusEvent="'EventBusRole'"
+      :states="states"
       class="role__form"
     />
     <DynamicTable
       :title="'Lista de Roles'"
       :data="roles"
       :thead="thead"
+      :states="states"
       class="role__table"
     />
   </div>

@@ -8,10 +8,9 @@
   border-radius: 3px;
   background-color: $card-bg-color;
 
-  &__input {
+  &__ele {
     margin: 5px 0;
     width: 300px;
-    height: 30px;
     border: 1px solid black;
     border-radius: 0;
     &-ready {
@@ -20,6 +19,14 @@
     &-error {
       border-color: $input-error-border-color;
     }
+  }
+
+  &__input {
+    height: 30px;
+  }
+
+  &__textarea {
+    height: 100px;
   }
 
   &__btn {

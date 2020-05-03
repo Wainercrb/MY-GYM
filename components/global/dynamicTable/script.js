@@ -1,10 +1,17 @@
+import { EventBus } from '~/assets/scripts/vue-helpers/eventBus'
 export default {
-  props: ['data', 'thead', 'title'],
+  props: ['data', 'thead', 'title', 'states'],
+  data() {
+    return {
+      item: {}
+    }
+  },
   methods: {
     editRecord(item) {
-      console.log('edit', item)
+      EventBus.$emit(this.states.updating, item)
     },
-    updateRecord(item) {},
-    deleteRecord(item) {}
+    deleteRecord(item) {
+      EventBus.$emit(this.states.deleting, item)
+    }
   }
 }
