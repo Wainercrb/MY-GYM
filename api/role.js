@@ -1,11 +1,11 @@
 const baseURL = process.env.API_BASE_URL
 export default {
-  async getRoles(axios, cb) {
+  async getAll(axios, cb) {
     const roles = await axios.$get(`${baseURL}/roles`)
     cb(roles)
   },
-  async saveRole(overwriteRole, axios, cb) {
-    const role = await axios.$post(`${baseURL}/roles`, overwriteRole)
+  async save(newRole, axios, cb) {
+    const role = await axios.$post(`${baseURL}/roles`, newRole)
     cb(role)
   }
 }

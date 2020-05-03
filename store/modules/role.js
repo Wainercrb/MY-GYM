@@ -1,9 +1,9 @@
-import role from '../../api/role'
+import api from '../../api/role'
 
 const state = () => ({
-  roles: [],
+  all: [],
   thead: [],
-  currentRole: {}
+  current: {}
 })
 
 const getters = {}
@@ -13,36 +13,36 @@ const actions = {
     const thead = ['Role', 'Creado', 'Actulizado', 'Acciones']
     commit('setTableThead', thead)
   },
-  getAllRoles({ commit }) {
-    role.getRoles(this.$axios, (roles) => {
+  getAll({ commit }) {
+    api.getAll(this.$axios, (roles) => {
       const formatRoles = formatData(roles)
       commit('setRoles', formatRoles)
     })
   },
-  saveRole({ commit }, newRole) {
+  save({ commit }, newRole) {
     const today = new Date()
-    const overwriteRole = {
+    const role = {
       ...newRole.data,
       createdAt: today,
       updatedAt: today
     }
-    role.saveRole(overwriteRole, this.$axios, (currentRole) => {
-      const formatData = formatSimpleData(currentRole)
-      commit('setCurrentRole', formatData)
-      commit('pushNewRole', formatData)
+    api.save(role, this.$axios, (rsRole) => {
+      const formatData = formatSimpleData(rsRole)
+      commit('setCurrent', formatData)
+      commit('pushNew', formatData)
     })
   }
 }
 
 const mutations = {
-  pushNewRole(state, role) {
-    state.roles.push(role)
+  pushNew(state, role) {
+    state.all.push(role)
   },
   setRoles(state, roles) {
-    state.roles = roles
+    state.all = roles
   },
-  setCurrentRole(state, role) {
-    state.currentRole = role
+  setCurrent(state, role) {
+    state.current = role
   },
   setTableThead(state, thead) {
     state.thead = thead

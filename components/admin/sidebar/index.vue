@@ -10,10 +10,14 @@
     </header>
     <ul class="sidebar__menu">
       <li class="sidebar__menu-item">
-        <span>Dashboard</span>
+        <router-link to="/admin/tipos-de-cedula">
+          <span>Dashboard</span>
+        </router-link>
       </li>
       <li class="sidebar__menu-item">
-        <span>Customers</span>
+        <router-link to="/admin/roles">
+          <span>Customers</span>
+        </router-link>
       </li>
       <li class="sidebar__menu-item">
         <span>Users</span>

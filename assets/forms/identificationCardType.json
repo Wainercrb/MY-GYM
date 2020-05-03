@@ -1,0 +1,23 @@
+[
+  {
+    "ele": "input",
+    "className": "dn-form__input",
+    "name": "type",
+    "type": "text",
+    "placeHolder": "",
+    "value": "",
+    "validatorType": "isByteLength",
+    "labelText": "Rol",
+    "labelClass": "dn-form__label",
+    "parentDivClass": "dn-form__div",
+    "validateOptions": {
+      "min": 2,
+      "max": 50
+    }
+  },
+  {
+    "ele": "button-ready",
+    "className": "dn-form__btn",
+    "text": "Guardar"
+  }
+]

@@ -13,7 +13,7 @@ export default {
     DynamicTable
   },
   computed: mapState({
-    roles: (state) => state.modules.role.roles,
+    roles: (state) => state.modules.role.all,
     thead: (state) => state.modules.role.thead
   }),
   data() {
@@ -24,11 +24,11 @@ export default {
   methods: mapActions('modules/user', ['addProductToCart']),
   created() {
     this.$store.dispatch('modules/role/initTable')
-    this.$store.dispatch('modules/role/getAllRoles')
+    this.$store.dispatch('modules/role/getAll')
   },
   mounted() {
     EventBus.$on(EVENT_BUS_LISTENER, (data) => {
-      this.$store.dispatch('modules/role/saveRole', data)
+      this.$store.dispatch('modules/role/save', data)
     })
   }
 }
