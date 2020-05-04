@@ -60,11 +60,13 @@ export default {
       })
     },
     rebuildForm(role) {
+      console.warn(role)
       this.myForm = []
       this.currentRole = role
       roleFormJson.forEach((item) => {
         const match = role[item.name]
         if (match) {
+          console.warn('match', match)
           item.value = match
         }
         this.myForm.push(item)

@@ -135,6 +135,33 @@ export default {
           div.appendChild(label)
           div.appendChild(input)
           this.parentContainer.appendChild(div)
+        },
+        select: (item) => {
+          const input = document.createElement(item.type)
+          const label = this.createLabel(item.labelText, item.labelClass)
+          const div = this.createParentDiv(item.parentDivClass)
+          input.setAttribute('class', item.className)
+          input.setAttribute('placeholder', item.placeHolder)
+          input.setAttribute('type', item.eleType)
+          input.setAttribute('name', item.name)
+          input.setAttribute('value', item.value)
+          input.addEventListener('change', (event) => {
+            const value = event.target.value
+            const name = event.target.name
+            this.appendInputStats({
+              ele: input,
+              name,
+              value,
+              validatorType: item.validatorType,
+              validateOptions: item.validateOptions
+            })
+          })
+          appendOptionsToSelect(input, item.options)
+          setSelectValue(input, item)
+          this.buildElements.push(input)
+          div.appendChild(label)
+          div.appendChild(input)
+          this.parentContainer.appendChild(div)
         }
       }
     },
@@ -152,5 +179,23 @@ export default {
       options.ele.classList.add('dn-form__ele-error')
       options.ele.classList.remove('dn-form__ele-ready')
     }
+  }
+}
+
+function appendOptionsToSelect(ele, options) {
+  options.forEach((option) => {
+    const node = document.createElement('option')
+    node.value = option.value
+    node.text = option.text
+    ele.appendChild(node)
+  })
+}
+
+function setSelectValue(ele, item) {
+  const index = item.options.findIndex((option) => {
+    return option.value.includes(item.value)
+  })
+  if (index > -1) {
+    ele.selectedIndex = index
   }
 }

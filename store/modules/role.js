@@ -48,7 +48,6 @@ const actions = {
     const fullRole = {
       ...role,
       _id: state.current._id,
-      status: state.current.status,
       updatedAt: today,
       createdAt: state.current.createdAt
     }
