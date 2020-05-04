@@ -3,8 +3,25 @@ export default {
   props: ['data', 'thead', 'title', 'states'],
   data() {
     return {
-      item: {}
+      item: {},
+      isLoading: true
     }
+  },
+  computed: {
+    showLoading() {
+      if (!this.data || !this.thead) {
+        return true
+      }
+      if (this.data && this.thead && !this.isLoading) {
+        return false
+      }
+      return true
+    }
+  },
+  mounted() {
+    this.$nextTick(() => {
+      setTimeout(() => (this.isLoading = false), 500)
+    })
   },
   methods: {
     editRecord(item) {

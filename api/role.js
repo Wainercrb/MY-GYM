@@ -4,12 +4,13 @@ export default {
     const roles = await axios.$get(`${baseURL}/roles`)
     cb(roles)
   },
-  async save(newRole, axios, cb) {
-    const role = await axios.$post(`${baseURL}/roles`, newRole)
-    cb(role)
+  async save(role, axios, cb) {
+    const rsRole = await axios.$post(`${baseURL}/roles`, role)
+    cb(rsRole)
   },
-  async update(updateRole, id, axios, cb) {
-    const role = await axios.$put(`${baseURL}/roles/${id}`, updateRole)
-    cb(role)
+  async update(role, axios, cb) {
+    const id = role._id
+    const rsRole = await axios.$put(`${baseURL}/roles/${id}`, role)
+    cb(rsRole)
   }
 }

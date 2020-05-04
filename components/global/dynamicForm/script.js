@@ -6,14 +6,27 @@ export default {
   watch: {
     myForm(newVal, oldVal) {
       this.resetValues()
+      this.isLoading = true
       this.myForm = newVal
       this.buildElements = []
       this.parentContainer.innerHTML = ''
       this.createFormElements()
     }
   },
+  computed: {
+    showLoading() {
+      if (!this.myForm) {
+        return true
+      }
+      if (this.myForm && !this.isLoading) {
+        return false
+      }
+      return true
+    }
+  },
   data() {
     return {
+      isLoading: true,
       formHasError: false,
       parentContainer: {},
       buildElements: [],
@@ -57,6 +70,7 @@ export default {
     createFormElements() {
       this.myForm.forEach(this.buildSingleElement)
       this.createSubmitButton()
+      this.isLoading = false
     },
     submitButtonClick() {
       this.formHasError = false

@@ -20,37 +20,48 @@ const actions = {
     ]
     commit('setTableThead', thead)
   },
+  setCurrent({ commit }, role) {
+    commit('setCurrent', role)
+  },
   getAll({ commit }) {
     api.getAll(this.$axios, (roles) => {
       const formatRoles = formatData(roles)
       commit('setRoles', formatRoles)
     })
   },
-  save({ commit, state }, newRole) {
+  save({ commit }, role) {
     const today = new Date()
-    const role = {
-      ...newRole.data,
+    const fullRole = {
+      ...role,
       status: 'enable',
       createdAt: today,
       updatedAt: today
     }
-    api.save(role, this.$axios, (rsRole) => {
+    api.save(fullRole, this.$axios, (rsRole) => {
       const formatData = formatSimpleData(rsRole)
       commit('setCurrent', formatData)
       commit('pushNew', formatData)
     })
   },
-  update({ commit }, updateObj) {
+  update({ commit, state }, role) {
     const today = new Date()
-    const id = updateObj.id
-    const role = {
-      _id: id,
-      ...updateObj.data,
-      status: updateObj.oldData.status,
+    const fullRole = {
+      ...role,
+      _id: state.current._id,
+      status: state.current.status,
       updatedAt: today,
-      createdAt: updateObj.oldData.createdAt
+      createdAt: state.current.createdAt
     }
-    api.update(role, id, this.$axios, () => {
+    api.update(fullRole, this.$axios, () => {
+      commit('removeOne', fullRole)
+      commit('setCurrent', fullRole)
+      commit('pushNew', fullRole)
+    })
+  },
+  delete({ commit, state }) {
+    const role = state.current
+    role.status = 'disable'
+    api.update(role, this.$axios, () => {
       commit('removeOne', role)
       commit('setCurrent', role)
       commit('pushNew', role)

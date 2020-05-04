@@ -1,9 +1,29 @@
 @import './variables.scss';
+@import './transition.scss';
+
+$min-heigth: 300px;
 
 .dn-table {
-  padding: 10px 5px;
-  border-radius: 5px;
+  
+  padding: 10px;
+  border-radius: 3px;
   background-color: $card-bg-color;
+  min-height: $min-heigth;
+  width: 100%;
+
+  &__loading {
+    height: $min-heigth;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__content {
+    min-height: $min-heigth;
+    width: 100%;
+    overflow-y: auto;
+  }
 
   &__table {
     width: 100%;
@@ -18,7 +38,7 @@
 
   &__td,
   &__th {
-    padding: 15px;
+    padding: 5px;
     border: 1px solid #ddd;
     text-align: left;
   }
