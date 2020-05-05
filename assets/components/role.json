@@ -1,4 +1,26 @@
 {
+  "states": {
+    "submiting": {
+      "action": "ROLE-SUBMITING",
+      "title": "Nuevo Rol"
+    },
+    "updating": {
+      "action": "ROLE-UPDATING",
+      "title": "Editando Rol"
+    },
+    "deleting": {
+      "action": "ROLE-DELETING",
+      "title": "Nuevo Rol"
+    },
+    "disabling": {
+      "action": "ROLE-DISABLING",
+      "title": "Nuevo Rol"
+    },
+    "sorting": {
+      "action": "ROLE-SORTING",
+      "title": "Nuevo Rol"
+    }
+  },
   "tableThead": [
     { "title": "Role", "key": "roleName", "type": "string", "sort": true },
     { "title": "Detalles", "key": "details", "type": "string", "sort": true },
@@ -10,12 +32,12 @@
   "form": [
     {
       "ele": "input",
-      "className": "dn-form__ele dn-form__input",
       "name": "roleName",
       "type": "INPUT",
-      "eleType": "text",
-      "placeHolder": "",
       "value": "",
+      "eleType": "text",
+      "className": "dn-form__ele dn-form__input",
+      "placeHolder": "",
       "validatorType": "isByteLength",
       "labelText": "Rol",
       "labelClass": "dn-form__label",
@@ -27,12 +49,12 @@
     },
     {
       "ele": "input",
-      "className": "dn-form__ele dn-form__textarea",
       "name": "details",
       "type": "TEXTAREA",
-      "eleType": "text",
-      "placeHolder": "",
       "value": "",
+      "eleType": "text",
+      "className": "dn-form__ele dn-form__textarea",
+      "placeHolder": "",
       "validatorType": "isByteLength",
       "labelText": "Detalles",
       "labelClass": "dn-form__label",
@@ -44,12 +66,12 @@
     },
     {
       "ele": "select",
-      "className": "dn-form__ele dn-form__select",
       "name": "status",
       "type": "SELECT",
-      "eleType": "text",
-      "placeHolder": "",
       "value": "ban",
+      "eleType": "text",
+      "className": "dn-form__ele dn-form__select",
+      "placeHolder": "",
       "validatorType": "isByteLength",
       "labelText": "Estado",
       "labelClass": "dn-form__label",

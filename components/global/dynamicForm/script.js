@@ -30,7 +30,7 @@ export default {
     return {
       isLoading: true,
       formHasError: false,
-      parentContainer: {},
+      parentCtn: {},
       buildElements: [],
       elements: {},
       data: {}
@@ -40,7 +40,7 @@ export default {
     this.elements = this.buildFormElements()
   },
   mounted() {
-    this.parentContainer = this.$refs.parentContainer
+    this.parentCtn = this.$refs.parentCtn
     this.createFormElements()
   },
   methods: {
@@ -48,7 +48,7 @@ export default {
       this.formHasError = false
       this.validateFullForm()
       if (!this.formHasError) {
-        EventBus.$emit(this.states.submiting, this.data)
+        EventBus.$emit(this.states.submiting.action, this.data)
         this.resetForm()
       }
     },
@@ -56,7 +56,7 @@ export default {
       const button = createSubmitButton(this.form)
       if (button) {
         button.addEventListener('click', () => this.submitButtonClick())
-        this.parentContainer.appendChild(button)
+        this.parentCtn.appendChild(button)
       }
     },
     createFormElements() {
@@ -68,7 +68,7 @@ export default {
       this.formHasError = false
       this.isLoading = true
       this.buildElements = []
-      this.parentContainer.innerHTML = ''
+      this.parentCtn.innerHTML = ''
       this.createFormElements()
     },
     validateFullForm() {
@@ -94,7 +94,7 @@ export default {
         div.appendChild(label)
         div.appendChild(ele)
         this.buildElements.push(ele)
-        this.parentContainer.appendChild(div)
+        this.parentCtn.appendChild(div)
       }
     },
     buildFormElements() {

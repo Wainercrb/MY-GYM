@@ -1,8 +1,12 @@
 import api from '../../api/role'
+import { sortByType } from '../../assets/utils/sorting'
 
 const state = () => ({
   all: [],
-  current: {}
+  current: {},
+  formReady: true,
+  tableReady: false,
+  pagination: {}
 })
 
 const getters = {}
@@ -27,7 +31,6 @@ const actions = {
     }
     api.save(fullRole, this.$axios, (rsRole) => {
       const formatData = formatSimpleData(rsRole)
-      commit('setCurrent', formatData)
       commit('pushNew', formatData)
     })
   },
@@ -40,25 +43,49 @@ const actions = {
       createdAt: state.current.createdAt
     }
     api.update(fullRole, this.$axios, () => {
-      commit('removeOne', fullRole)
-      commit('setCurrent', fullRole)
-      commit('pushNew', fullRole)
+      const format = formatSimpleData(fullRole)
+      commit('removeOne', format)
+      commit('pushNew', format)
     })
   },
   delete({ commit, state }) {
-    const role = state.current
-    role.status = 'disable'
+    const role = {
+      ...state.current,
+      status: 'disable'
+    }
     api.update(role, this.$axios, () => {
       commit('removeOne', role)
-      commit('setCurrent', role)
       commit('pushNew', role)
     })
+  },
+  sorting({ commit, state }, thead) {
+    const sort = sortByType()[thead.type]
+    const all = Object.assign([], state.all)
+    if (typeof sort === 'function') {
+      const roles = sort(thead, all)
+      commit('sortData', roles)
+    }
   }
 }
 
 const mutations = {
+  setFormState(state, ready) {
+    state.formReady = ready
+  },
+  setTableState(state, ready) {
+    state.tableReady = ready
+  },
   pushNew(state, role) {
     state.all.push(role)
+  },
+  setRoles(state, roles) {
+    state.all = roles
+  },
+  setCurrent(state, role) {
+    state.current = role
+  },
+  sortData(state, roles) {
+    state.all = roles
   },
   removeOne(state, role) {
     const index = state.all.findIndex((item) => {
@@ -67,12 +94,6 @@ const mutations = {
     if (index > -1) {
       state.all.splice(index, 1)
     }
-  },
-  setRoles(state, roles) {
-    state.all = roles
-  },
-  setCurrent(state, role) {
-    state.current = role
   }
 }
 

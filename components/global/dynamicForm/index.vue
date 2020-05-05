@@ -6,7 +6,7 @@
     <transition name="fade">
       <div v-show="!showLoading" class="dn-form__content">
         <h2 class="dn-form__title">{{ title }}</h2>
-        <div ref="parentContainer" />
+        <div ref="parentCtn" />
       </div>
     </transition>
   </div>

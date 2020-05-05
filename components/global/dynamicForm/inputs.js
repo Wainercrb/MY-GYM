@@ -33,7 +33,7 @@ export function createLabel(item) {
 
 export function createParentDiv(item) {
   const div = document.createElement('DIV')
-  div.setAttribute('class', item.divClass)
+  div.setAttribute('class', item.parentDivClass)
   return div
 }
 

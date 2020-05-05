@@ -1,7 +1,7 @@
 <template>
   <div class="role">
     <div class="role__form">
-      <DynamicForm :title="formTitle" :form="form" :states="states" />
+      <DynamicForm :title="currentState.title" :form="form" :states="states" />
     </div>
     <div class="role__table">
       <DynamicTable
