@@ -2,14 +2,14 @@
   <div class="role">
     <DynamicForm
       :title="'Nuevo tipo de cedula'"
-      :myForm="myForm"
+      :form="form"
       :eventBusEvent="'EventBusRole'"
       class="role__form"
     />
     <DynamicTable
       :title="'Lista de tipos de cudulas'"
       :data="identificationCards"
-      :thead="thead"
+      :tableThead="tableThead"
       class="role__table"
     />
   </div>

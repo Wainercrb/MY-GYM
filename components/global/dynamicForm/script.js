@@ -1,24 +1,26 @@
 import Validator from 'validator'
+import {
+  createInput,
+  createSelect,
+  createLabel,
+  createParentDiv,
+  createSubmitButton
+} from './inputs'
 import { EventBus } from '~/assets/scripts/vue-helpers/eventBus'
 
 export default {
-  props: ['myForm', 'states', 'title'],
+  props: ['form', 'states', 'title'],
   watch: {
-    myForm(newVal, oldVal) {
-      this.resetValues()
-      this.isLoading = true
-      this.myForm = newVal
-      this.buildElements = []
-      this.parentContainer.innerHTML = ''
-      this.createFormElements()
+    form() {
+      this.resetForm()
     }
   },
   computed: {
     showLoading() {
-      if (!this.myForm) {
+      if (!this.form) {
         return true
       }
-      if (this.myForm && !this.isLoading) {
+      if (this.form && !this.isLoading) {
         return false
       }
       return true
@@ -42,57 +44,38 @@ export default {
     this.createFormElements()
   },
   methods: {
-    createLabel(labelText, labelClass) {
-      const label = document.createElement('LABEL')
-      const text = document.createTextNode(labelText)
-      label.setAttribute('for', labelText)
-      label.setAttribute('class', labelClass)
-      label.appendChild(text)
-      return label
-    },
-    createParentDiv(divClass) {
-      const div = document.createElement('DIV')
-      div.setAttribute('class', divClass)
-      return div
+    submitButtonClick() {
+      this.formHasError = false
+      this.validateFullForm()
+      if (!this.formHasError) {
+        EventBus.$emit(this.states.submiting, this.data)
+        this.resetForm()
+      }
     },
     createSubmitButton() {
-      const findButton = this.myForm.find((element) => {
-        return element.ele.includes('button-ready')
-      })
-      if (findButton) {
-        const button = document.createElement('BUTTON')
-        button.setAttribute('class', findButton.className)
-        button.innerHTML = findButton.text
+      const button = createSubmitButton(this.form)
+      if (button) {
         button.addEventListener('click', () => this.submitButtonClick())
         this.parentContainer.appendChild(button)
       }
     },
     createFormElements() {
-      this.myForm.forEach(this.buildSingleElement)
+      this.form.forEach(this.buildSingleElement)
       this.createSubmitButton()
       this.isLoading = false
     },
-    submitButtonClick() {
+    resetForm() {
       this.formHasError = false
-      this.validateFullForm()
-      if (!this.formHasError) {
-        EventBus.$emit(this.states.submiting, { ...this.data })
-        this.resetValues()
-      }
-    },
-    resetValues() {
-      this.formHasError = false
-      this.buildElements.forEach((ele) => {
-        ele.classList.remove('dn-form__ele-error')
-        ele.classList.remove('dn-form__ele-ready')
-        ele.value = ''
-      })
+      this.isLoading = true
+      this.buildElements = []
+      this.parentContainer.innerHTML = ''
+      this.createFormElements()
     },
     validateFullForm() {
       this.buildElements.forEach((ele) => {
         const value = ele.value
         const name = ele.getAttribute('name')
-        const findEle = this.myForm.find((item) => item.name === ele.name)
+        const findEle = this.form.find((item) => item.name === ele.name)
         this.appendInputStats({
           ele,
           name,
@@ -105,65 +88,43 @@ export default {
     buildSingleElement(item) {
       const element = this.elements[item.ele]
       if (typeof element === 'function') {
-        element(item)
+        const label = createLabel(item)
+        const div = createParentDiv(item)
+        const ele = element(item)
+        div.appendChild(label)
+        div.appendChild(ele)
+        this.buildElements.push(ele)
+        this.parentContainer.appendChild(div)
       }
     },
     buildFormElements() {
       return {
         input: (item) => {
-          const input = document.createElement(item.type)
-          const label = this.createLabel(item.labelText, item.labelClass)
-          const div = this.createParentDiv(item.parentDivClass)
-          input.setAttribute('class', item.className)
-          input.setAttribute('placeholder', item.placeHolder)
-          input.setAttribute('type', item.eleType)
-          input.setAttribute('name', item.name)
-          input.setAttribute('value', item.value)
-          input.innerHTML = item.value
-          input.addEventListener('change', (event) => {
-            const value = event.target.value
-            const name = event.target.name
-            this.appendInputStats({
-              ele: input,
-              name,
-              value,
-              validatorType: item.validatorType,
-              validateOptions: item.validateOptions
-            })
-          })
-          this.buildElements.push(input)
-          div.appendChild(label)
-          div.appendChild(input)
-          this.parentContainer.appendChild(div)
+          const input = createInput(item)
+          input.addEventListener('change', (event) =>
+            this.addEleListener(event, input, item)
+          )
+          return input
         },
         select: (item) => {
-          const input = document.createElement(item.type)
-          const label = this.createLabel(item.labelText, item.labelClass)
-          const div = this.createParentDiv(item.parentDivClass)
-          input.setAttribute('class', item.className)
-          input.setAttribute('placeholder', item.placeHolder)
-          input.setAttribute('type', item.eleType)
-          input.setAttribute('name', item.name)
-          input.setAttribute('value', item.value)
-          input.addEventListener('change', (event) => {
-            const value = event.target.value
-            const name = event.target.name
-            this.appendInputStats({
-              ele: input,
-              name,
-              value,
-              validatorType: item.validatorType,
-              validateOptions: item.validateOptions
-            })
-          })
-          appendOptionsToSelect(input, item.options)
-          setSelectValue(input, item)
-          this.buildElements.push(input)
-          div.appendChild(label)
-          div.appendChild(input)
-          this.parentContainer.appendChild(div)
+          const select = createSelect(item)
+          select.addEventListener('change', (event) =>
+            this.addEleListener(event, select, item)
+          )
+          return select
         }
       }
+    },
+    addEleListener(event, select, item) {
+      const value = event.target.value
+      const name = event.target.name
+      this.appendInputStats({
+        name,
+        value,
+        ele: select,
+        validatorType: item.validatorType,
+        validateOptions: item.validateOptions
+      })
     },
     appendInputStats(options) {
       const validator = Validator[options.validatorType]
@@ -179,23 +140,5 @@ export default {
       options.ele.classList.add('dn-form__ele-error')
       options.ele.classList.remove('dn-form__ele-ready')
     }
-  }
-}
-
-function appendOptionsToSelect(ele, options) {
-  options.forEach((option) => {
-    const node = document.createElement('option')
-    node.value = option.value
-    node.text = option.text
-    ele.appendChild(node)
-  })
-}
-
-function setSelectValue(ele, item) {
-  const index = item.options.findIndex((option) => {
-    return option.value.includes(item.value)
-  })
-  if (index > -1) {
-    ele.selectedIndex = index
   }
 }

@@ -2,7 +2,7 @@ import { mapState } from 'vuex'
 import DynamicForm from '~/components/global/dynamicForm'
 import DynamicTable from '~/components/global/dynamicTable'
 import { EventBus } from '~/assets/scripts/vue-helpers/eventBus'
-import identificationCardTypeFormJson from '~/assets/forms/identificationCardType.json'
+import { tableThead, form } from '~/assets/components/role.json'
 
 const EVENT_BUS_LISTENER = 'EventBusRole'
 
@@ -13,16 +13,18 @@ export default {
     DynamicTable
   },
   computed: mapState({
-    identificationCards: (state) => state.modules.identificationCardType.all,
-    thead: (state) => state.modules.identificationCardType.thead
+    identificationCards: (state) => state.modules.identificationCardType.all
   }),
   data() {
     return {
-      myForm: identificationCardTypeFormJson
+      thead: [],
+      form: [],
+      tableThead: []
     }
   },
   created() {
-    this.$store.dispatch('modules/identificationCardType/initTable')
+    this.form = form
+    this.tableThead = tableThead
     this.$store.dispatch('modules/identificationCardType/getAll')
   },
   mounted() {

@@ -1,13 +1,13 @@
 <template>
   <div class="role">
     <div class="role__form">
-      <DynamicForm :title="'Nuevo Rol'" :myForm="myForm" :states="states" />
+      <DynamicForm :title="formTitle" :form="form" :states="states" />
     </div>
     <div class="role__table">
       <DynamicTable
         :title="'Lista de Roles'"
         :data="roles"
-        :thead="thead"
+        :tableThead="tableThead"
         :states="states"
       />
     </div>

@@ -2,24 +2,12 @@ import api from '../../api/role'
 
 const state = () => ({
   all: [],
-  thead: [],
   current: {}
 })
 
 const getters = {}
 
 const actions = {
-  initTable({ commit }) {
-    const thead = [
-      'Role',
-      'Detalles',
-      'Estado',
-      'Creado',
-      'Actulizado',
-      'Acciones'
-    ]
-    commit('setTableThead', thead)
-  },
   setCurrent({ commit }, role) {
     commit('setCurrent', role)
   },
@@ -85,9 +73,6 @@ const mutations = {
   },
   setCurrent(state, role) {
     state.current = role
-  },
-  setTableThead(state, thead) {
-    state.thead = thead
   }
 }
 

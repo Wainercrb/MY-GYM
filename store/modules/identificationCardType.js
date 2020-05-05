@@ -9,10 +9,6 @@ const state = () => ({
 const getters = {}
 
 const actions = {
-  initTable({ commit }) {
-    const thead = ['Tipo', 'Creado', 'Actulizado', 'Acciones']
-    commit('setTableThead', thead)
-  },
   getAll({ commit }) {
     api.getAll(this.$axios, (identficationCardTypes) => {
       const formatTypes = formatData(identficationCardTypes)
@@ -43,9 +39,6 @@ const mutations = {
   },
   setCurrent(state, identificationCardType) {
     state.current = identificationCardType
-  },
-  setTableThead(state, thead) {
-    state.thead = thead
   }
 }
 

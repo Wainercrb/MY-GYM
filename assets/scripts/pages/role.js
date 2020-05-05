@@ -2,7 +2,7 @@ import { mapState } from 'vuex'
 import DynamicForm from '~/components/global/dynamicForm'
 import DynamicTable from '~/components/global/dynamicTable'
 import { EventBus } from '~/assets/scripts/vue-helpers/eventBus'
-import roleFormJson from '~/assets/forms/role.json'
+import { tableThead, form } from '~/assets/components/role.json'
 
 const STATES = {
   submiting: 'ROLE-SUBMITING',
@@ -18,19 +18,19 @@ export default {
     DynamicTable
   },
   computed: mapState({
-    roles: (state) => state.modules.role.all,
-    thead: (state) => state.modules.role.thead
+    roles: (state) => state.modules.role.all
   }),
   data() {
     return {
-      myForm: roleFormJson,
+      form,
+      tableThead,
       states: STATES,
       currentState: STATES.submiting,
-      currentRole: {}
+      currentRole: null,
+      formTitle: 'Nuevo Rol'
     }
   },
   created() {
-    this.$store.dispatch('modules/role/initTable')
     this.$store.dispatch('modules/role/getAll')
   },
   mounted() {
@@ -46,8 +46,10 @@ export default {
       EventBus.$on(this.states.submiting, (role) => {
         this.callStoreAction(role)
         this.currentState = this.states.submiting
+        this.formTitle = 'Nuevo Rol'
       })
       EventBus.$on(this.states.updating, (role) => {
+        this.formTitle = 'Editando Rol'
         this.currentState = this.states.updating
         this.$store.dispatch('modules/role/setCurrent', role)
         this.rebuildForm(role)
@@ -60,13 +62,11 @@ export default {
       })
     },
     rebuildForm(role) {
-      console.warn(role)
       this.myForm = []
       this.currentRole = role
-      roleFormJson.forEach((item) => {
+      form.forEach((item) => {
         const match = role[item.name]
         if (match) {
-          console.warn('match', match)
           item.value = match
         }
         this.myForm.push(item)

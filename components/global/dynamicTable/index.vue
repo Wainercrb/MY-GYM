@@ -10,12 +10,13 @@
           <thead>
             <tr class="dn-table__tr">
               <th
-                v-for="(th, index) in thead"
+                v-for="(th, index) in tableThead"
                 :key="`tr-${index}`"
-                :title="th"
+                :title="th.title"
+                @click="sortRecord(th)"
                 class="dn-table__th"
               >
-                {{ th }}
+                {{ th.title }}
               </th>
             </tr>
           </thead>
