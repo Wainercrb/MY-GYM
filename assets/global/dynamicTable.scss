@@ -4,7 +4,6 @@
 $min-heigth: 300px;
 
 .dn-table {
-  
   padding: 10px;
   border-radius: 3px;
   background-color: $card-bg-color;
@@ -25,6 +24,29 @@ $min-heigth: 300px;
     overflow-y: auto;
   }
 
+  &__title  {
+    margin: 5px 0 10px 0;
+  }
+
+  &__filter {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 5px;
+  }
+
+  &__input-filter {
+    width: 200px;
+  }
+
+  &__btn-filter {
+    margin-left: 5px;
+  }
+
+  &__table-responsive {
+    overflow-x: auto;
+  }
+
   &__table {
     width: 100%;
     border: 1px solid #ddd;
@@ -41,5 +63,8 @@ $min-heigth: 300px;
     padding: 5px;
     border: 1px solid #ddd;
     text-align: left;
+  }
+  &__acciones {
+    display: flex;
   }
 }

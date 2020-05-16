@@ -1,14 +1,22 @@
 <template>
   <div class="role">
     <div class="role__form">
-      <DynamicForm :title="currentState.title" :form="form" :states="states" />
+      <DynamicForm
+        @submit="submit"
+        :pageIsLoading="formIsLoading"
+        :title="'Mantenimiento Rol'"
+        :form="form"
+      />
     </div>
     <div class="role__table">
       <DynamicTable
+        @edit="editRole"
+        @delete="deleteRole"
+        @sortRecord="sortRecord"
+        :pageIsLoading="tableIsLoading"
         :title="'Lista de Roles'"
-        :data="roles"
         :tableThead="tableThead"
-        :states="states"
+        :data="roles"
       />
     </div>
   </div>

@@ -6,10 +6,9 @@ import {
   createParentDiv,
   createSubmitButton
 } from './inputs'
-import { EventBus } from '~/assets/scripts/vue-helpers/eventBus'
 
 export default {
-  props: ['form', 'states', 'title'],
+  props: ['form', 'title', 'pageIsLoading'],
   watch: {
     form() {
       this.resetForm()
@@ -17,13 +16,10 @@ export default {
   },
   computed: {
     showLoading() {
-      if (!this.form) {
+      if (this.isLoading || this.pageIsLoading) {
         return true
       }
-      if (this.form && !this.isLoading) {
-        return false
-      }
-      return true
+      return false
     }
   },
   data() {
@@ -45,11 +41,11 @@ export default {
   },
   methods: {
     submitButtonClick() {
+      this.isLoading = true
       this.formHasError = false
       this.validateFullForm()
       if (!this.formHasError) {
-        EventBus.$emit(this.states.submiting.action, this.data)
-        this.resetForm()
+        this.$emit('submit', this.data)
       }
     },
     createSubmitButton() {
@@ -62,7 +58,7 @@ export default {
     createFormElements() {
       this.form.forEach(this.buildSingleElement)
       this.createSubmitButton()
-      this.isLoading = false
+      this.stopLoading()
     },
     resetForm() {
       this.formHasError = false
@@ -139,6 +135,14 @@ export default {
       delete this.data[name]
       options.ele.classList.add('dn-form__ele-error')
       options.ele.classList.remove('dn-form__ele-ready')
+    },
+    stopLoading() {
+      setTimeout(() => {
+        this.isLoading = false
+      }, 200)
+    },
+    printError(error) {
+      console.error(error)
     }
   }
 }

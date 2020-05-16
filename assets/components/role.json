@@ -1,25 +1,7 @@
 {
-  "states": {
-    "submiting": {
-      "action": "ROLE-SUBMITING",
-      "title": "Nuevo Rol"
-    },
-    "updating": {
-      "action": "ROLE-UPDATING",
-      "title": "Editando Rol"
-    },
-    "deleting": {
-      "action": "ROLE-DELETING",
-      "title": "Nuevo Rol"
-    },
-    "disabling": {
-      "action": "ROLE-DISABLING",
-      "title": "Nuevo Rol"
-    },
-    "sorting": {
-      "action": "ROLE-SORTING",
-      "title": "Nuevo Rol"
-    }
+  "tableConfig": {
+    "rows": 5,
+    "paginationBlock": 5
   },
   "tableThead": [
     { "title": "Role", "key": "roleName", "type": "string", "sort": true },

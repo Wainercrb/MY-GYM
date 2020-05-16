@@ -18,8 +18,12 @@ $min-heigth: 300px;
   }
 
   &__content {
-    height: $min-heigth;
+    min-height: $min-heigth;
     width: 100%;
+  }
+
+  &__title  {
+    margin: 5px 0 10px 0;
   }
 
   &__ele {

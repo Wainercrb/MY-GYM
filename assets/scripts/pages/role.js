@@ -1,8 +1,7 @@
 import { mapState } from 'vuex'
 import DynamicForm from '~/components/global/dynamicForm'
 import DynamicTable from '~/components/global/dynamicTable'
-import { EventBus } from '~/assets/scripts/vue-helpers/eventBus'
-import { tableThead, form, states } from '~/assets/components/role.json'
+import { tableThead, form } from '~/assets/components/role.json'
 
 export default {
   layout: 'admin',
@@ -15,46 +14,70 @@ export default {
   }),
   data() {
     return {
-      form,
-      states,
-      tableThead,
-      currentState: states.submiting
+      form: [],
+      role: null,
+      orderIsAsc: true,
+      tableIsLoading: true,
+      formIsLoading: true,
+      tableThead
     }
   },
   created() {
     this.$store.dispatch('modules/role/getAll')
   },
   mounted() {
-    this.initListeners()
-  },
-  beforeDestroy() {
-    EventBus.$off(this.states.submiting.action, this.initListeners)
-    EventBus.$off(this.states.updating.action, this.initListeners)
-    EventBus.$off(this.states.deleting.action, this.initListeners)
-    EventBus.$off(this.states.sorting.action, this.initListeners)
+    this.form = form
+    this.formIsLoading = false
+    this.tableIsLoading = false
   },
   methods: {
-    initListeners() {
-      EventBus.$on(this.states.submiting.action, (role) => {
-        this.callStoreAction(role)
-        this.currentState = this.states.submiting
-      })
-      EventBus.$on(this.states.updating.action, (role) => {
-        this.currentState = this.states.updating
-        this.$store.dispatch('modules/role/setCurrent', role)
-        this.rebuildFormStructure(role)
-      })
-      EventBus.$on(this.states.sorting.action, (thead) => {
-        this.$store.dispatch('modules/role/sorting', thead)
-      })
-      EventBus.$on(this.states.deleting.action, (role) => {
-        Promise.all([
-          this.$store.dispatch('modules/role/setCurrent', role),
-          this.$store.dispatch('modules/role/delete', role)
-        ])
-      })
+    submit(role) {
+      if (!Object.keys(this.role).length) {
+        this.setStoreAction(role, 'save')
+        return
+      }
+      const fullRole = formatUpdateRole(this.role, role)
+      this.setStoreAction(fullRole, 'update')
     },
-    rebuildFormStructure(role) {
+    editRole(role) {
+      this.rebuildForm(role)
+      this.role = role
+    },
+    deleteRole(role) {
+      this.tableIsLoading = true
+      this.$store
+        .dispatch('modules/role/delete', role)
+        .then(() => (this.tableIsLoading = false))
+        .catch(this.printError)
+    },
+    reset() {
+      this.role = null
+      this.form = form
+      this.formIsLoading = false
+      this.tableIsLoading = false
+    },
+    setStoreAction(role, action) {
+      this.formIsLoading = true
+      this.tableIsLoading = true
+      this.$store
+        .dispatch(`modules/role/${action}`, role)
+        .then(this.reset)
+        .catch(this.printError)
+    },
+    sortRecord(data) {
+      if (data.sort) {
+        this.tableIsLoading = true
+        data.orderIsAsc = this.orderIsAsc
+        this.$store
+          .dispatch('modules/role/sorting', data)
+          .then(() => {
+            this.tableIsLoading = false
+            this.orderIsAsc = !this.orderIsAsc
+          })
+          .catch(this.printError)
+      }
+    },
+    rebuildForm(role) {
       this.form = []
       form.forEach((item) => {
         const match = role[item.name]
@@ -64,17 +87,17 @@ export default {
         this.form.push(item)
       })
     },
-    callStoreAction(role) {
-      switch (this.currentState) {
-        case this.states.submiting:
-          this.$store.dispatch('modules/role/save', role)
-          break
-        case this.states.updating:
-          this.$store.dispatch('modules/role/update', role)
-          break
-        default:
-          break
-      }
+    printError(error) {
+      this.reset()
+      console.error(error)
     }
+  }
+}
+
+function formatUpdateRole(updateRole, formRole) {
+  return {
+    ...formRole,
+    _id: updateRole._id,
+    createdAt: updateRole.createdAt
   }
 }

@@ -2,19 +2,12 @@ import api from '../../api/role'
 import { sortByType } from '../../assets/utils/sorting'
 
 const state = () => ({
-  all: [],
-  current: {},
-  formReady: true,
-  tableReady: false,
-  pagination: {}
+  all: []
 })
 
 const getters = {}
 
 const actions = {
-  setCurrent({ commit }, role) {
-    commit('setCurrent', role)
-  },
   getAll({ commit }) {
     api.getAll(this.$axios, (roles) => {
       const formatRoles = formatData(roles)
@@ -34,13 +27,11 @@ const actions = {
       commit('pushNew', formatData)
     })
   },
-  update({ commit, state }, role) {
+  update({ commit }, role) {
     const today = new Date()
     const fullRole = {
       ...role,
-      _id: state.current._id,
-      updatedAt: today,
-      createdAt: state.current.createdAt
+      updatedAt: today
     }
     api.update(fullRole, this.$axios, () => {
       const format = formatSimpleData(fullRole)
@@ -48,14 +39,14 @@ const actions = {
       commit('pushNew', format)
     })
   },
-  delete({ commit, state }) {
-    const role = {
-      ...state.current,
+  delete({ commit, state }, role) {
+    const fullRole = {
+      ...role,
       status: 'disable'
     }
-    api.update(role, this.$axios, () => {
-      commit('removeOne', role)
-      commit('pushNew', role)
+    api.update(fullRole, this.$axios, () => {
+      commit('removeOne', fullRole)
+      commit('pushNew', fullRole)
     })
   },
   sorting({ commit, state }, thead) {
@@ -69,20 +60,11 @@ const actions = {
 }
 
 const mutations = {
-  setFormState(state, ready) {
-    state.formReady = ready
-  },
-  setTableState(state, ready) {
-    state.tableReady = ready
-  },
-  pushNew(state, role) {
-    state.all.push(role)
-  },
   setRoles(state, roles) {
     state.all = roles
   },
-  setCurrent(state, role) {
-    state.current = role
+  pushNew(state, role) {
+    state.all.push(role)
   },
   sortData(state, roles) {
     state.all = roles
